@@ -12,12 +12,27 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
 public class RedisConfiguration {
-    @Bean
-    ReactiveRedisOperations<String, Coffee> redisOperations(ReactiveRedisConnectionFactory factory){
-        Jackson2JsonRedisSerializer<Coffee> serializer = new Jackson2JsonRedisSerializer<>(Coffee.class);
-        RedisSerializationContext.RedisSerializationContextBuilder<String, Coffee>
-                builder = RedisSerializationContext.newSerializationContext(new StringRedisSerializer());
-        RedisSerializationContext<String, Coffee> context = builder.value(serializer).build();
+
+
+
+    public <T> ReactiveRedisOperations<String, T> redisOperations(ReactiveRedisConnectionFactory factory, Class<T> type) {
+        // JSON serializer for values of type T
+        Jackson2JsonRedisSerializer<T> serializer = new Jackson2JsonRedisSerializer<>(type);
+
+        // Serialization context builder
+        RedisSerializationContext.RedisSerializationContextBuilder<String, T> builder =
+                RedisSerializationContext.newSerializationContext(new StringRedisSerializer());
+
+        // Setting the value serializer to use JSON
+        RedisSerializationContext<String, T> context = builder.value(serializer).build();
+
+        // Create the ReactiveRedisTemplate with the custom serialization context
         return new ReactiveRedisTemplate<>(factory, context);
     }
+
+    @Bean
+    public ReactiveRedisOperations<String, Coffee> coffeeRedisSetup(ReactiveRedisConnectionFactory factory) {
+        return redisOperations(factory, Coffee.class);
+    }
+
 }
