@@ -6,6 +6,7 @@ spring:
 logging:
   level:
     root: INFO
-    com.example.myapp: DEBUG
+    example.reactive.redis: DEBUG
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+

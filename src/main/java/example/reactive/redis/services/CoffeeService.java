@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.ReactiveRedisOperations;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Service
 @RequiredArgsConstructor
@@ -17,5 +18,9 @@ public class CoffeeService {
         log.info("All coffees requested");
         return coffeeOps.keys("*")
                 .flatMap(coffeeOps.opsForValue()::get);
+    }
+
+    public Mono<Boolean> add(Coffee coffee) {
+        return coffeeOps.opsForValue().set(coffee.id(), coffee);
     }
 }

@@ -26,6 +26,9 @@ repositories {
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-redis-reactive")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
+	implementation("org.springdoc:springdoc-openapi-starter-webflux-api:2.6.0")
+
+
 	compileOnly("org.projectlombok:lombok")
 	annotationProcessor("org.projectlombok:lombok")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
